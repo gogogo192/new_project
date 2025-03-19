@@ -27,9 +27,9 @@ public class MemberController {
     }
 
     // 특정 회원 조회
-    @GetMapping("/{id}")
-    public ResponseEntity<Member> getMemberById(@PathVariable Long id) {
-        Optional<Member> member = memberService.getMemberById(id);
+    @GetMapping("/{no}")  // no로 변경
+    public ResponseEntity<Member> getMemberByNo(@PathVariable Long no) {  // no로 변경
+        Optional<Member> member = memberService.getMemberByNo(no);  // 서비스 메소드도 no로 변경
         return member.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
@@ -42,17 +42,17 @@ public class MemberController {
     }
 
     // 회원 수정
-    @PutMapping("/{id}")
-    public ResponseEntity<Member> updateMember(@PathVariable Long id, @RequestBody Member member) {
-        Member updatedMember = memberService.updateMember(id, member);
+    @PutMapping("/{no}")  // no로 변경
+    public ResponseEntity<Member> updateMember(@PathVariable Long no, @RequestBody Member member) {  // no로 변경
+        Member updatedMember = memberService.updateMember(no, member);  // 서비스 메소드도 no로 변경
         return updatedMember != null ? ResponseEntity.ok(updatedMember)
                 : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     // 회원 삭제
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteMember(@PathVariable Long id) {
-        memberService.deleteMember(id);
+    @DeleteMapping("/{no}")  // no로 변경
+    public ResponseEntity<Void> deleteMember(@PathVariable Long no) {  // no로 변경
+        memberService.deleteMember(no);  // 서비스 메소드도 no로 변경
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

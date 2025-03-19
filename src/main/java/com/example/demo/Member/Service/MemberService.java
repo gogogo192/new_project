@@ -1,48 +1,49 @@
-    package com.example.demo.Member.Service;
-    import com.example.demo.Item.Member;
-    import com.example.demo.Member.Repository.MemberRepository;
-    import org.springframework.beans.factory.annotation.Autowired;
-    import org.springframework.stereotype.Service;
+package com.example.demo.Member.Service;
 
-    import java.util.List;
-    import java.util.Optional;
+import com.example.demo.Item.Member;
+import com.example.demo.Member.Repository.MemberRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-    @Service
-    public class MemberService {
+import java.util.List;
+import java.util.Optional;
 
-        private final MemberRepository memberRepository;
+@Service
+public class MemberService {
 
-        @Autowired
-        public MemberService(MemberRepository memberRepository) {
-            this.memberRepository = memberRepository;
-        }
+    private final MemberRepository memberRepository;
 
-        // 회원 추가
-        public Member addMember(Member member) {
+    @Autowired
+    public MemberService(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
+    }
+
+    // 회원 추가
+    public Member addMember(Member member) {
+        return memberRepository.save(member);
+    }
+
+    // 모든 회원 조회
+    public List<Member> getAllMembers() {
+        return memberRepository.findAll();
+    }
+
+    // 특정 회원 조회 (기존 id -> no로 변경)
+    public Optional<Member> getMemberByNo(Long no) {
+        return memberRepository.findById(no); // no 기준으로 조회
+    }
+
+    // 회원 삭제
+    public void deleteMember(Long no) {
+        memberRepository.deleteById(no); // no 기준으로 삭제
+    }
+
+    // 회원 수정 (기존 id -> no로 변경)
+    public Member updateMember(Long no, Member member) {
+        if (memberRepository.existsById(no)) { // no 기준으로 확인
+            member.setNo(no); // no를 기반으로 회원을 수정
             return memberRepository.save(member);
         }
-
-        // 모든 회원 조회
-        public List<Member> getAllMembers() {
-            return memberRepository.findAll();
-        }
-
-        // 특정 회원 조회
-        public Optional<Member> getMemberById(Long id) {
-            return memberRepository.findById(id);
-        }
-
-        // 회원 삭제
-        public void deleteMember(Long id) {
-            memberRepository.deleteById(id);
-        }
-
-        // 회원 수정
-        public Member updateMember(Long id, Member member) {
-            if (memberRepository.existsById(id)) {
-                member.setNo(id);
-                return memberRepository.save(member);
-            }
-            return null;
-        }
+        return null;
     }
+}
