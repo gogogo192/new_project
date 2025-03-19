@@ -1,28 +1,21 @@
-
+version: '3'
 services:
-  mysql-container:
-    image: mysql:8.0
-    container_name: mysql-container
-    restart: always
+  oracle-db:
+    image: container-registry.oracle.com/database/free:latest  # 무료 Oracle XE 버전
+    container_name: oracle-db
     environment:
-      MYSQL_ROOT_PASSWORD: 1234
-      MYSQL_DATABASE: mydb
-      MYSQL_USER: user
-      MYSQL_PASSWORD: 1234
+      - ORACLE_PWD=1234  # 원하는 비밀번호로 설정
     ports:
-      - "3306:3306"
+      - "1521:1521"  # Oracle DB 접속 포트
+      - "5500:5500"  # Oracle Enterprise Manager 포트
+    volumes:
+      - oracle-data:/opt/oracle/oradata  # 데이터 디렉토리 설정
     networks:
-      - spring-network
+      - oracle-net
 
-  spring-app:
-    build: .
-    container_name: spring-boot-app
-    ports:
-      - "8080:8080"
-    depends_on:
-      - mysql-container
-    networks:
-      - spring-network
+volumes:
+  oracle-data:
 
 networks:
-  spring-network:
+  oracle-net:
+    driver: bridge

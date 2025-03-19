@@ -15,7 +15,7 @@ public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long No;  // 데이터베이스의 No 컬럼과 매핑됩니다.
+    private Long no;
 
     private String id;
     private String name;
